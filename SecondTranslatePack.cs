@@ -11,7 +11,7 @@ namespace Madeline.RKTM
         public static LoadedLanguage secondTranslatePack { get; set; }
 
         public static void UpdateSecondTranslatePackField()
-        {
+        { //FIXME does not work properly.
             secondTranslatePack = LanguageDatabase.AllLoadedLanguages.FirstOrDefault(la => la.folderName == RKTM.SecondLanguagePackName);
         }
 

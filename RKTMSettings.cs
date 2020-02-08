@@ -12,7 +12,7 @@ namespace Madeline.RKTM
         public RKTMSettings()
         {
             base.ExposeData();
-            Scribe_Values.Look<string>(ref secondLanguagePack, "secondLanguagePack", "None", true);
+            Scribe_Values.Look<string>(ref secondLanguagePack, "secondLanguagePack", "None", false);
         }
     }
 }

@@ -11,24 +11,15 @@ namespace Madeline.RKTM
 {
     static class TranslatorPatch
     {
-        public static void Initialize()
+        public static void Patch(HarmonyInstance HMinstance)
         {
-            HarmonyInstance.DEBUG = true;
-            Log.Message("Patching RKTM...");
-            HarmonyInstance HMinstance = HarmonyInstance.Create("Madeline.RKTM");
             var original = AccessTools.Method(typeof(Translator), nameof(Translator.Translate), new Type[] { typeof(string) });
             var transpiler = AccessTools.Method(typeof(TranslatorPatch), nameof(TranslatorPatch.Transpiler_Translate));
             HMinstance.Patch(original, null, null, new HarmonyMethod(transpiler));
 
-            Log.Message("Patching first..");
-
             var original2 = AccessTools.Method(typeof(LanguageDatabase), nameof(LanguageDatabase.LoadAllMetadata));
             var postfix = AccessTools.Method(typeof(TranslatorPatch), nameof(FetchSecondData));
             HMinstance.Patch(original2, null, new HarmonyMethod(postfix));
-
-            Log.Message("Patching second..");
-
-            Log.Message("Patch complete");
         }
 
         static IEnumerable<CodeInstruction> Transpiler_Translate(IEnumerable<CodeInstruction> instructions, ILGenerator ILG)
@@ -41,7 +32,6 @@ namespace Madeline.RKTM
             for(int i = 0; i < instructions.Count(); i++)
             {
                 var inst = insts[i];
-                Log.Message(inst.operand?.ToString());
                 if(i > 0 && insts[i-1].opcode == OpCodes.Call && inst.opcode == OpCodes.Brfalse && insts[i-1].operand.ToString().Contains("TryTranslate"))
                 { // entering IL_0008, brfalse, line 143
                     inst.operand = goToSecond;
@@ -70,7 +60,7 @@ namespace Madeline.RKTM
 
         static void FetchSecondData()
         {
-            Log.Message("Fetching data");
+            //Log.Message($"Fetching languagePack {RKTM.SecondLanguagePackName}");
             SecondTranslatePackDB.secondTranslatePack = LanguageDatabase.AllLoadedLanguages.FirstOrDefault(la => la.folderName == RKTM.SecondLanguagePackName);
         }
     }
