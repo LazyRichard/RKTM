@@ -23,6 +23,7 @@ namespace Madeline.RKTM
             HarmonyInstance.DEBUG = true;
             TranslatorPatch.Patch(HMinstance);
             DefInjectionPatch.Patch(HMinstance);
+            CustomDefInjection.Patch(HMinstance);
             ExternalDataSaver.Initialize(pack.AssembliesFolder);
             dataSaver = ExternalDataSaver.externalDataSaver;
             SecondLanguagePackName = dataSaver.GetData("AlternativeLanguageName");
