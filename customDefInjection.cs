@@ -13,8 +13,6 @@ namespace Madeline.RKTM
         #region transpiler harmony patch
         public static void Patch(HarmonyInstance HMinstance)
         {
-            return; // 잠시 막음
-            Log.Message("Injecting RKTM code to rimworld...");
             var original = AccessTools.Method(typeof(CustomDefInjection), nameof(InjectSecondsToData));
             var transpiler = AccessTools.Method(typeof(CustomDefInjection), nameof(DontMake10ParameterMethodFuckYouTynan));
             HMinstance.Patch(original, null, null, new HarmonyMethod(transpiler));
@@ -37,7 +35,6 @@ namespace Madeline.RKTM
                 {
                     if(inst.operand.ToString().Contains("Patch here1"))
                     {
-                        Log.Message("Injecting code 1");
                         // defType, pairKey, fullListInjection, typeof(List<string>), errorOnDefNotFOund(false), fileSource, isPlaceHolder, &normalizedPath, &suggestedPath, &replacedString, &replacedList
                         yield return new CodeInstruction(OpCodes.Ldloc_2); // instance
                         yield return new CodeInstruction(OpCodes.Ldloc, 7); // defType
@@ -60,7 +57,6 @@ namespace Madeline.RKTM
                     }
                     else if(inst.operand.ToString().Contains("Patch here2"))
                     {
-                        Log.Message("Injecting code 2");
                         //defType, pairKey, Injection, typeof(string), errorOnDefNotFound, fileSource, isPlaceholder, &normalizedPath, &suggestedPath, &replacedString, &replacedList
                         yield return new CodeInstruction(OpCodes.Ldloc_2); // instance
                         yield return new CodeInstruction(OpCodes.Ldloc, 7); // defType
@@ -95,7 +91,9 @@ namespace Madeline.RKTM
         static List<string> alreadyUsedPaths = new List<string>();
         public static void InjectLanguageData(LoadedLanguage alternativeLanguage)
         {
+            alternativeLanguage.LoadData();
             var alternativeInjections = new List<Pair<DefInjectionPackage, KeyValuePair<string, DefInjectionPackage.DefInjection>>>();
+            int AllPairCount = 0;
             foreach(var defInjectionPackage in alternativeLanguage.defInjections)
             {
                 foreach(var pair in defInjectionPackage.injections)
@@ -106,8 +104,10 @@ namespace Madeline.RKTM
                         var item = new Pair<DefInjectionPackage, KeyValuePair<string, DefInjectionPackage.DefInjection>>(defInjectionPackage, pair);
                         alternativeInjections.Add(item);
                     }
+                    AllPairCount += 1;
                 }
             }
+            Log.Message($" {alternativeInjections.Count} actual datas from {AllPairCount}");
             InjectSecondsToData(alternativeInjections);
         }
 
@@ -159,6 +159,10 @@ namespace Madeline.RKTM
 
         static void RegisterUsedPath(IEnumerable<string> paths)
         {
+            //예 : IceSheet.label
+            //예 : IceSheet.description
+            //예 : SeaIce.label
+            //예 : SeaIce.description
             alreadyUsedPaths.AddRange(paths);
         }
     }

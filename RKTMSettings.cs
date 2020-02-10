@@ -6,6 +6,7 @@ using Verse;
 
 namespace Madeline.RKTM
 {
+    /*
     public class RKTMSettings : ModSettings
     {
         public string secondLanguagePack;
@@ -15,4 +16,5 @@ namespace Madeline.RKTM
             Scribe_Values.Look<string>(ref secondLanguagePack, "secondLanguagePack", "None", false);
         }
     }
+    */
 }

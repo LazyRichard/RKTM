@@ -11,23 +11,27 @@ namespace Madeline.RKTM
     public class RKTM : Mod
     {
         public static RKTM singleton;
-        RKTMSettings RKTMSettings;
         ExternalDataSaver dataSaver;
         public ModContentPack pack;
-        public static string SecondLanguagePackName;
+        string _SecondLanguagePackName;
+        public static string SecondLanguagePackName { get { return singleton._SecondLanguagePackName; } set { singleton._SecondLanguagePackName = value; } }
         public RKTM(ModContentPack pack) : base(pack)
         {
-            this.RKTMSettings = GetSettings<RKTMSettings>();
+            Log.Message("Initializing RKTM language injector by madeline...");
+
+            ExternalDataSaver.Initialize(pack.AssembliesFolder);
+
             singleton = this;
+
             HarmonyInstance HMinstance = HarmonyInstance.Create("Madeline.RKTM");
             HarmonyInstance.DEBUG = true;
+
             TranslatorPatch.Patch(HMinstance);
             DefInjectionPatch.Patch(HMinstance);
             CustomDefInjection.Patch(HMinstance);
-            ExternalDataSaver.Initialize(pack.AssembliesFolder);
+
             dataSaver = ExternalDataSaver.externalDataSaver;
             SecondLanguagePackName = dataSaver.GetData("AlternativeLanguageName");
-            Log.Message(pack.AssembliesFolder);
         }
 
         public override void DoSettingsWindowContents(Rect inRect)
@@ -38,16 +42,15 @@ namespace Madeline.RKTM
             listing_Standard.Begin(inRect);
 
             string description = "SecondLanguagePackDescription".Translate();
-            string result = listing_Standard.TextEntryLabeled("SecondLanguagePack", RKTMSettings.secondLanguagePack, 1);
-            RKTMSettings.secondLanguagePack = result;
+            string result = listing_Standard.TextEntryLabeled("SecondLanguagePack", SecondLanguagePackName, 1);
+            SecondLanguagePackName = result;
 
             listing_Standard.End();
         }
 
         public override void WriteSettings()
         {
-            base.WriteSettings();
-            dataSaver.WriteData("AlternativeLanguageName", RKTMSettings.secondLanguagePack);
+            dataSaver.WriteData("AlternativeLanguageName", SecondLanguagePackName);
             dataSaver.SaveDataToFile();
             //SecondTranslatePackDB.UpdateSecondTranslatePackField();
         }

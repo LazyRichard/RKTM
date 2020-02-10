@@ -42,7 +42,6 @@ namespace Madeline.RKTM
 
                 if(inst.opcode == OpCodes.Ldsfld)
                 {
-                    Log.Message("Injecting IL codes");
                     var IL_000F = inst.labels.ListFullCopy();
                     yield return new CodeInstruction(OpCodes.Ldarg_0) { labels = new List<Label>() { goToSecond } };
                     yield return new CodeInstruction(OpCodes.Ldloca_S, 0);
