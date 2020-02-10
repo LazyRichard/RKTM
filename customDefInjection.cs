@@ -84,11 +84,11 @@ namespace Madeline.RKTM
         }
         static void FetchUsedTranslateDataPaths(Dictionary<string, DefInjectionPackage.DefInjection> ___injections)
         {
-            RegisterUsedPath(___injections.Keys.AsEnumerable());
+            RegisterUsedPath(___injections.Keys.ToList());
         }
 
         #endregion
-        static List<string> alreadyUsedPaths = new List<string>();
+        static HashSet<string> alreadyUsedPaths = new HashSet<string>();
         public static void InjectLanguageData(LoadedLanguage alternativeLanguage)
         {
             alternativeLanguage.LoadData();
@@ -157,7 +157,7 @@ namespace Madeline.RKTM
             alreadyUsedPaths.Add(path);
         }
 
-        static void RegisterUsedPath(IEnumerable<string> paths)
+        static void RegisterUsedPath(List<string> paths)
         {
             //예 : IceSheet.label
             //예 : IceSheet.description
