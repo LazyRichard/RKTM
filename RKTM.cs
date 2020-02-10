@@ -42,7 +42,8 @@ namespace Madeline.RKTM
             listing_Standard.Begin(inRect);
 
             string description = "SecondLanguagePackDescription".Translate();
-            string result = listing_Standard.TextEntryLabeled("SecondLanguagePack", SecondLanguagePackName, 1);
+            listing_Standard.Label("SecondLanguagePack".Translate(), -1, description);
+            string result = listing_Standard.TextEntry(SecondLanguagePackName, 1);
             SecondLanguagePackName = result;
 
             listing_Standard.End();
@@ -57,7 +58,7 @@ namespace Madeline.RKTM
 
         public override string SettingsCategory()
         {
-            return "RKTMSettingsLabel".ToString();
+            return "RKTMSettingsLabel".Translate();
         }
     }
 }

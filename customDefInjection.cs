@@ -107,7 +107,7 @@ namespace Madeline.RKTM
                     AllPairCount += 1;
                 }
             }
-            Log.Message($" {alternativeInjections.Count} actual datas from {AllPairCount}");
+            Log.Message($"Injecting {alternativeInjections.Count} language datas from {AllPairCount} data, language : {alternativeLanguage.folderName}");
             InjectSecondsToData(alternativeInjections);
         }
 
