@@ -1,7 +1,7 @@
-설치방법
-https://steamcommunity.com/sharedfiles/filedetails/?id=1993968629 구독하고 Mod에서 활성화
-활성화 위치는 어디든지 상관없습니다
-어느 모드와도 연관받지 않습니다.
+설치방법   
+https://steamcommunity.com/sharedfiles/filedetails/?id=1993968629 구독하고 Mod에서 활성화   
+활성화 위치는 어디든지 상관없습니다   
+어느 모드와도 연관받지 않습니다.   
 
 RKTM Addon 모드 사용방법
 ========
